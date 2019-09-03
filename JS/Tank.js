@@ -1,4 +1,4 @@
-class Obstacle {
+class Tank {
   constructor(w, playerY, playerH, ctx) {
     this.ctx = ctx;
     this.w = 15;
@@ -6,11 +6,12 @@ class Obstacle {
     this.dx = 10;
     this.x = w;
     this.y = playerY + playerH - this.h - 5;
+    this.newTank = new Image();
+    this.newTank.src = "./../Img/Enemy Tank.png";
   }
 
   draw() {
-    this.ctx.fillStyle = "black";
-    this.ctx.fillRect(this.x, this.y, this.w, this.h);
+    this.ctx.drawImage(this.newTank, this.x, this.y, 750, 120);
   }
 
   move() {

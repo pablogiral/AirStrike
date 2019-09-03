@@ -31,28 +31,28 @@ function drawBackground() {
   backGround.draw()
 }
 
-let obstacles = [];
+let tanks = [];
 
-function generateObstacle() {
-  obstacles.push(new Obstacle(w, plane.y, plane.h, ctx)
+function generateTank() {
+  tanks.push(new Tank (w, plane.y, plane.h, ctx)
   );
 }
 
-function drawObstacles() {
-  obstacles.forEach(function(obstacle) {
-    obstacle.draw();
+function drawTanks() {
+  tanks.forEach(function(tank) {
+    tank.draw();
   });
 }
 
-function moveObstacles() {
-  obstacles.forEach(function(obstacle) {
-    obstacle.move();
+function moveTanks() {
+  tanks.forEach(function(tank) {
+    tank.move();
   });
 }
 
-function clearObstacles() {
-    obstacles = obstacles.filter(function(obstacle) {
-      return obstacle.x >= 0;
+function clearTanks() {
+    tanks = tanks.filter(function(tank) {
+      return tank.x >= -200;
     });
 }
 
@@ -80,14 +80,14 @@ if (counter > 2000) {
   counter = 0;
 }
 
-// controlamos la velocidad de generación de obstáculos
+// controlamos la velocidad de generación de tanques
 if (counter % 200 === 0) {
-  generateObstacle();
+  generateTank();
 }
-drawObstacles();
-moveObstacles();
-clearObstacles();
+drawTanks();
+moveTanks();
+clearTanks();
 
-console.log(obstacles)
+console.log(tanks)
 
 }, 1000 / gameFrames)
