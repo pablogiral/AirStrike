@@ -5,6 +5,7 @@ const h2 = h / 2;
 const PI_DOUBLE = Math.PI * 2;
 const gameFrames = 40
 let counter = 0;
+const ground = h - 80;
 
 
 const canvasDOMEL = document.querySelector("#canvas");
@@ -34,13 +35,12 @@ function drawBackground() {
 let tanks = [];
 
 function generateTank() {
-  tanks.push(new Tank (w, plane.y, plane.h, ctx)
-  );
+  tanks.push(new Tank (ctx));
 }
 
 function drawTanks() {
   tanks.forEach(function(tank) {
-    tank.draw();
+    tank.draw(counter);
   });
 }
 

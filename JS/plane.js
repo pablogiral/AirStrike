@@ -13,10 +13,10 @@ class Plane {
       B_KEY: 66,
     },
     this.x = 80;
+    this.y = h2 - 100;
 
     // guardar posición original (suelo) //llamarlo posicion yGround en vez de y0 para aclararme
-    this.y0 = this.canvasH * 0.8;
-    this.y = h2 - 100;
+    this.y0 = this.canvasH - 220;
 
     this.img = new Image();
     this.img.src = "./../img/Sprites plane 4.png";
@@ -29,7 +29,7 @@ class Plane {
     this.w = 713/3;
     this.h = 403/3;
 
-    this.vy = 1;
+    // this.vy = 1;
 
     //array vacío para bombas
     this.bombs = [];  
@@ -116,8 +116,6 @@ class Plane {
     var bomb = new Bomb(
       this.x + this.w - 90,
       this.y + this.h/2+15,
-      this.y0,
-      this.h,
       this.ctx
     );
 
