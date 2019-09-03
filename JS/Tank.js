@@ -11,7 +11,8 @@ class Tank {
     this.newTank.frames = 3;
     this.newTank.frameIndex = 0;
     this.newTank.width = 702;
-    this.newTank.height = 104
+    this.newTank.height = 104;
+    this.tanks = []
   }
 
   draw(framesCounter) {

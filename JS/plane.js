@@ -36,15 +36,12 @@ class Plane {
     this.w = 713 / 3;
     this.h = 403 / 3;
 
-    // this.vy = 1;
-
     //array vacío para bombas
     this.bombs = [];
 
     //array vacío ametralladora
     this.machineguns = [];
 
-    // this.setListeners();
   }
 
   draw(framesCounter) {
@@ -82,31 +79,11 @@ class Plane {
       machinegun.move();
     });
   }
+
   //acciones de tecla
   setListeners() {
-    // document.onkeydown = function(event) {
-    //   // console.log(event.keyCode); //molaría cambiar este movidón por un switch
-    //   if (event.keyCode === this.keys.TOP_KEY && this.y > 5) {
-    //     this.y -= 10;
-    //   }
-      // if (event.keyCode === this.keys.B_KEY) {
-      //   this.dropBomb();
-      // }
-      // else if (event.keyCode === this.keys.SPACE) {
-      //   this.fireMachinegun();
-      // }
-    //   else if (event.keyCode === this.keys.BOTT_KEY && this.y < h - 200) {
-    //     this.y += 10;
-    //   }
-    //   else if (event.keyCode === this.keys.RIGHT_KEY && this.x < w - 250) {
-    //     this.x += 10;
-    //   }
-    //   else if (event.keyCode === this.keys.LEFT_KEY && this.x > 20) {
-    //     this.x -= 10;
-    //   }
-    // }.bind(this);
     document.onkeydown = function(event) {
-      // event.preventDefault();
+     
       if (event.keyCode === this.keys.LEFT_KEY) {
         this.keyState.LEFT_KEY = true;
         console.log("holahola")
@@ -129,7 +106,7 @@ class Plane {
     }.bind(this);
 
     document.onkeyup = function (event) {
-      // event.preventDefault();
+    
       if (event.keyCode === this.keys.LEFT_KEY) {
         this.keyState.LEFT_KEY = false;
         console.log(this.keyState.LEFT_KEY)
