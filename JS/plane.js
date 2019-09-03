@@ -79,10 +79,10 @@ class Plane {
   //acciones de tecla
   setListeners() {
     document.onkeydown = function(event) {
-      // console.log(event.keyCode);
+      // console.log(event.keyCode); //molaría cambiar este movidón por un switch
       if (event.keyCode === this.keys.TOP_KEY && this.y > 5) {
         this.y -= 10;
-      } 
+      }
       else if (event.keyCode === this.keys.B_KEY) {
         this.dropBomb();
       }

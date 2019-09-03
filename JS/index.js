@@ -5,7 +5,7 @@ const h2 = h / 2;
 const PI_DOUBLE = Math.PI * 2;
 const gameFrames = 40
 let counter = 0;
-const ground = h - 80;
+const ground = h - 45;
 
 
 const canvasDOMEL = document.querySelector("#canvas");
@@ -73,7 +73,6 @@ clearScreen();
 counter++;
 drawBackground();
 moveBackground();
-drawplane();
 
 // controlamos que frameCounter no sea superior a 2000
 if (counter > 2000) {
@@ -87,6 +86,7 @@ if (counter % 200 === 0) {
 drawTanks();
 moveTanks();
 clearTanks();
+drawplane();
 
 console.log(tanks)
 
