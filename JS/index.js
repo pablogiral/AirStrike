@@ -67,6 +67,46 @@ function drawplane(){
   plane.draw(counter)
 }
 
+plane.setListeners();
+
+function keyStatus(){
+  if (plane.keyState.TOP_KEY && plane.y > 5) {
+    plane.y -= 10;
+  }
+  if (plane.keyState.BOTT_KEY && plane.y < h - 200) {
+    plane.y += 10;
+  }
+  if (plane.keyState.LEFT_KEY && plane.x > 20) {
+    plane.x -= 10;
+  }
+  if (plane.keyState.RIGHT_KEY && plane.x < w - 250) {
+    plane.x += 10;
+  }
+  // if (plane.keyState.SPACE) {
+  //   plane.fireMachinegun();
+  // }
+  // if (plane.keyState.B_KEY) {
+  //   plane.dropBomb();
+  // }
+}
+
+// function isCollision() {
+//   // colisiones genéricas
+//   // (p.x + p.w > o.x && o.x + o.w > p.x && p.y + p.h > o.y && o.y + o.h > p.y )
+//   // esto chequea que el personaje no estén en colisión con cualquier obstáculo
+//   return this.tanks.some(tank => {
+//     return (
+//       plane.x + plane.w >= tank.x &&
+//       plane.x < tank.x + tank.w &&
+//       plane.y + plane.h >= tank.y
+//     );
+//   });
+// }
+
+// function gameOver() {
+//   clearInterval(intervalID)
+//   alert("Game Over")
+// }
 
 let intervalID = setInterval ( () => {
 clearScreen();
@@ -87,7 +127,11 @@ drawTanks();
 moveTanks();
 clearTanks();
 drawplane();
+keyStatus();
+// if (isCollision()) {
+//   gameOver();
+// }
 
-console.log(tanks)
+
 
 }, 1000 / gameFrames)
