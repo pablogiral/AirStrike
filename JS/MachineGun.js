@@ -10,6 +10,8 @@ class MachineGun {
     this.vy = 0;
     this.newRound = new Image();
     this.newRound.src = "./../Img/Bullet.png";
+    this.w = 25
+    this.h = 13
     this.gravity = 0.05;
   }
 

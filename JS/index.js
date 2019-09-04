@@ -3,7 +3,7 @@ const h = window.innerHeight;
 const w2 = w / 2;
 const h2 = h / 2;
 const PI_DOUBLE = Math.PI * 2;
-const gameFrames = 40
+const gameFrames = 40;
 let counter = 0;
 const ground = h - 45;
 
@@ -22,47 +22,46 @@ canvasDOMEL.setAttribute("width", `${w}px`);
 canvasDOMEL.setAttribute("height", `${h}px`);
 
 function clearScreen() {
-  ctx.clearRect(0, 0, w, h)
+  ctx.clearRect(0, 0, w, h);
 }
 
-let backGround = new Background(w,h,ctx);
-
+let backGround = new Background(w, h, ctx);
 
 //mejor toda esta mandanga como métodos de la clase tank?
 
 let tanks = [];
 
 function generateTank() {
-  tanks.push(new Tank (ctx));
+  tanks.push(new Tank(ctx));
 }
 
 function clearTanks() {
-    tanks = tanks.filter(function(tank) {
-      return tank.x >= -200;
-    });
+  tanks = tanks.filter(function(tank) {
+    return tank.x >= -200;
+  });
 }
 //enemyPlanes
 let enemyPlanes = [];
 
 function generateEnemyPlane() {
-  enemyPlanes.push(new EnemyPlane (ctx));
+  enemyPlanes.push(new EnemyPlane(ctx));
 }
 
 function clearEnemyPlanes() {
-    enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
-      return enemyPlane.x >= -200;
-    });
+  enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
+    return enemyPlane.x >= -200;
+  });
 }
 
 let plane = new Plane(ctx);
 
-function drawplane(){
-  plane.draw(counter)
+function drawplane() {
+  plane.draw(counter);
 }
 
 plane.setListeners();
 
-function keyStatus(){
+function keyStatus() {
   if (plane.keyState.TOP_KEY && plane.y > 5) {
     plane.y -= 10;
   }
@@ -77,64 +76,120 @@ function keyStatus(){
   }
 }
 
-// function checkColisionBombTank() {
-//   for (var i = 0; i < player.quaffles.length; i++) {
-//     for (var j = 0; j < hoops.length; j++) {
-//       if (
-//         player.quaffles[i].x < hoops[j].x + hoops[j].w &&
-//         player.quaffles[i].x + player.quaffles[i].w > hoops[j].x &&
-//         player.quaffles[i].y < hoops[j].y + hoops[j].h &&
-//         player.quaffles[i].y + player.quaffles[i].h > hoops[j].y) {
+// Motor del juego
+let intervalID = setInterval(() => {
+  clearScreen();
+  counter++;
+  backGround.draw();
+  backGround.move();
 
-//         if (hoops[j].scoring) {
-//           console.log("Has sumado un punto");
-//         }
-//         hoops[j].scoring = false;
-//       }
-//     }
-//   }
-// }
+  // Generación de tanques
+  if (counter % (10 + randomInt(100, 200)) === 0) {
+    generateTank();
+  }
+  tanks.forEach(function(tank) {
+    tank.draw(counter);
+  });
+  tanks.forEach(function(tank) {
+    tank.move();
+  });
+  tanks = tanks.filter(function(tank) {
+    return tank.x >= -200;
+  });
 
+  // Generación de enemy planes
+  if (counter % (100 + randomInt(150, 300)) === 0) {
+    generateEnemyPlane();
+  }
+  enemyPlanes.forEach(function(enemyPlane) {
+    enemyPlane.draw(counter);
+  });
+  enemyPlanes.forEach(function(enemyPlane) {
+    enemyPlane.move();
+  });
+  enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
+    return enemyPlane.x >= -200;
+  });
 
+  //Plane
+  drawplane();
+  keyStatus();
 
-let intervalID = setInterval ( () => {
-clearScreen();
-counter++;
-backGround.draw();
-backGround.move();
-
-// controlamos la velocidad de generación de tanques
-if (counter % (100 + randomInt(100, 200)) === 0) {
-  generateTank();
-}
-tanks.forEach(function(tank) {
-  tank.draw(counter);
-});
-tanks.forEach(function(tank) {
-  tank.move();
-});
-
-tanks = tanks.filter(function(tank) {
-  return tank.x >= -200;
-});
-//enemy planes
-if (counter % (100 + randomInt(150, 300)) === 0) {
-  generateEnemyPlane();
-}
-enemyPlanes.forEach(function(enemyPlane) {
-  enemyPlane.draw(counter);
-});
-enemyPlanes.forEach(function(enemyPlane) {
-  enemyPlane.move();
-});
-
-enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
-  return enemyPlane.x >= -200;
-});
-drawplane();
-keyStatus();
-
-if (counter > 2000) {
+  //collision check
+  checkColisionTankPlane();
+  checkColisionEnemyPlanePlane();
+  checkColisionTankBomb();
+  checkColisionEnemyPlaneMachinegun();
+  //mantenimiento
+  if (counter > 2000) {
     counter = 0;
   }
-}, 1000 / gameFrames)
+}, 1000 / gameFrames);
+
+//////COLISIONES//////
+
+// Tanques-avion
+function checkColisionTankPlane() {
+  for (var i = 0; i < tanks.length; i++) {
+    if (
+      tanks[i].x < plane.x + plane.w &&
+      tanks[i].x + tanks[i].w > plane.x &&
+      tanks[i].y < plane.y + plane.h &&
+      tanks[i].y + tanks[i].h > plane.y
+    ) {
+      
+      tanks[i].collision = true;
+      
+    }
+  }
+}
+
+function checkColisionEnemyPlanePlane() {
+  for (var i = 0; i < enemyPlanes.length; i++) {
+    if (
+      enemyPlanes[i].x < plane.x + plane.w &&
+      enemyPlanes[i].x + enemyPlanes[i].w > plane.x &&
+      enemyPlanes[i].y < plane.y + plane.h &&
+      enemyPlanes[i].y + enemyPlanes[i].h > plane.y
+    ) {
+      
+      enemyPlanes[i].collision = true;
+      // enemyPlanes[i].newEnemyPlane.src = ""
+    }
+  }
+}
+
+function checkColisionTankBomb() {
+  for (var i = 0; i < plane.bombs.length; i++) {
+    for (var j = 0; j < tanks.length; j++) {
+      if (
+        plane.bombs[i].x < tanks[j].x + tanks[j].w &&
+        plane.bombs[i].x + plane.bombs[i].w > tanks[j].x &&
+        plane.bombs[i].y < tanks[j].y + tanks[j].h &&
+        plane.bombs[i].y + plane.bombs[i].h > tanks[j].y
+      ) {
+        
+        tanks[j].collision = true;
+        // bombs[i].explosion = true;
+      }
+    }
+  }
+}
+
+function checkColisionEnemyPlaneMachinegun() {
+  for (var i = 0; i < plane.machineguns.length; i++) {
+    for (var j = 0; j < enemyPlanes.length; j++) {
+      // console.log(enemyPlanes[j], plane.machineguns[i])
+      if (
+        plane.machineguns[i].x < enemyPlanes[j].x + enemyPlanes[j].w &&
+        plane.machineguns[i].x + plane.machineguns[i].w > enemyPlanes[j].x &&
+        plane.machineguns[i].y < enemyPlanes[j].y + enemyPlanes[j].h &&
+        plane.machineguns[i].y + plane.machineguns[i].h > enemyPlanes[j].y
+      ) {
+        console.log("colision ametralladora avion");
+        enemyPlanes[j].collision = true;
+        // machineguns[i].explosion = true;
+      }
+    }
+  }
+}

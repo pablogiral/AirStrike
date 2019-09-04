@@ -12,24 +12,33 @@ class Tank {
     this.newTank.frameIndex = 0;
     this.newTank.width = 702;
     this.newTank.height = 104;
-    this.tanks = [];
+    this.newExplosion = new Image();
+    this.newExplosion.src = "./../Img/Explosiones.png";
+    this.newExplosion.frames = 3;
+    this.newExplosion.frameIndex = 0;
+    // this.tanks = [];
+    this.collision = false;
   }
 
   draw(framesCounter) {
-    // this.ctx.drawImage(this.newTank, this.x, this.y, 750, 120);
-    this.ctx.drawImage(
-      this.newTank,
-      this.newTank.frameIndex *
+    if (!this.collision) { 
+      this.ctx.drawImage(
+        this.newTank,
+        this.newTank.frameIndex *
+          Math.floor(this.newTank.width / this.newTank.frames),
+        0,
         Math.floor(this.newTank.width / this.newTank.frames),
-      0,
-      Math.floor(this.newTank.width / this.newTank.frames),
-      this.newTank.height,
-      this.x,
-      this.y,
-      this.w,
-      this.h
-    );
-    this.animateTank(framesCounter);
+        this.newTank.height,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      );
+      this.animateTank(framesCounter);
+    }
+    else {
+      this.tankExplode()
+    }
   }
   animateTank(framesCounter) {
     // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
@@ -43,5 +52,23 @@ class Tank {
 
   move() {
     this.x -= this.dx;
+  }
+
+  tankExplode() {
+    // this.y = this.ground;
+    this.newTank.src = "";
+    this.ctx.drawImage(
+      this.newExplosion,
+      this.newTank.frameIndex * Math.floor(this.newExplosion.width / this.newExplosion.frames),
+      0,
+      Math.floor(this.newExplosion.width / this.newExplosion.frames),
+      this.newExplosion.height,
+      this.x + 100,
+      this.y - 50,
+      150,
+      250 
+    );
+    this.animateTank(counter);
+    this.x += 5;
   }
 }

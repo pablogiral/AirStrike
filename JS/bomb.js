@@ -13,6 +13,8 @@ class Bomb {
     this.newExplosion.src = "./../Img/Explosiones.png";
     this.newExplosion.frames = 3;
     this.newExplosion.frameIndex = 0;
+    this.w = 50;
+    this.h = 20;
     this.gravity = 0.75;
     this.explosion = false;
   }
@@ -28,7 +30,9 @@ class Bomb {
 
   bombExplode() {
     
-    this.y = this.ground;
+    // this.y = this.ground;
+    this.gravity = 0
+    this.vy = 0
     this.newBomb.src = "";
     this.ctx.drawImage(
       this.newExplosion,

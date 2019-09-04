@@ -86,7 +86,6 @@ class Plane {
      
       if (event.keyCode === this.keys.LEFT_KEY) {
         this.keyState.LEFT_KEY = true;
-        console.log("holahola")
       }
       if (event.keyCode === this.keys.RIGHT_KEY) {
         this.keyState.RIGHT_KEY = true;
@@ -109,7 +108,6 @@ class Plane {
     
       if (event.keyCode === this.keys.LEFT_KEY) {
         this.keyState.LEFT_KEY = false;
-        console.log(this.keyState.LEFT_KEY)
       }
       if (event.keyCode === this.keys.RIGHT_KEY) {
         this.keyState.RIGHT_KEY = false;
