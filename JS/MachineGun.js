@@ -13,11 +13,18 @@ class MachineGun {
     this.w = 25
     this.h = 13
     this.gravity = 0.05;
+    this.collision = false;
   }
 
   draw() {
+    if (!this.collision) {
     this.ctx.drawImage(this.newRound, this.x, this.y, 25, 13);
   }
+  else {
+    this.newRound.src = ""
+  }
+  }
+  
 
   move() {
     this.x += this.vx;

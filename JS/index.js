@@ -3,9 +3,10 @@ const h = window.innerHeight;
 const w2 = w / 2;
 const h2 = h / 2;
 const PI_DOUBLE = Math.PI * 2;
-const gameFrames = 40;
+const gameFrames = 50;
 let counter = 0;
 const ground = h - 45;
+let score = 0;
 
 const canvasDOMEL = document.querySelector("#canvas");
 const ctx = canvasDOMEL.getContext("2d");
@@ -114,6 +115,12 @@ let intervalID = setInterval(() => {
   //Plane
   drawplane();
   keyStatus();
+  plane.bombs = plane.bombs.filter(function(bomb) {
+    return bomb.x >= -200;
+  });
+  plane.machineguns = plane.machineguns.filter(function(machinegun) {
+    return machinegun.x < w
+  })
 
   //collision check
   checkColisionTankPlane();
@@ -125,6 +132,11 @@ let intervalID = setInterval(() => {
     counter = 0;
   }
 }, 1000 / gameFrames);
+
+function drawScoreBoard() {
+  scoreBoard.update(score);
+}
+
 
 //////COLISIONES//////
 
@@ -186,9 +198,9 @@ function checkColisionEnemyPlaneMachinegun() {
         plane.machineguns[i].y < enemyPlanes[j].y + enemyPlanes[j].h &&
         plane.machineguns[i].y + plane.machineguns[i].h > enemyPlanes[j].y
       ) {
-        console.log("colision ametralladora avion");
         enemyPlanes[j].collision = true;
-        // machineguns[i].explosion = true;
+        console.log("colision ametralladora avion");
+        // machineguns[i].collision = true;
       }
     }
   }

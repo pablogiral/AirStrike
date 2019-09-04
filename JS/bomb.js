@@ -4,7 +4,6 @@ class Bomb {
     this.y = y;
     this.ground = ground;
     this.ctx = ctx;
-    this.r = 5;
     this.vx = 9;
     this.vy = 1;
     this.newBomb = new Image();
