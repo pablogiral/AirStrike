@@ -7,6 +7,7 @@ const gameFrames = 50;
 let counter = 0;
 const ground = h - 45;
 let score = 0;
+let damagePoints = 0;
 
 const canvasDOMEL = document.querySelector("#canvas");
 const ctx = canvasDOMEL.getContext("2d");
@@ -25,6 +26,15 @@ canvasDOMEL.setAttribute("height", `${h}px`);
 function clearScreen() {
   ctx.clearRect(0, 0, w, h);
 }
+
+function isGameOver() {
+  if (damagePoints >= 3000){
+    clearInterval(intervalID)
+    alert("GAME OVER")
+    document.location.reload();
+  }
+}
+
 
 let backGround = new Background(w, h, ctx);
 
@@ -83,7 +93,7 @@ let scoreBoard = new Scoreboard(ctx);
 let intervalID = setInterval(() => {
   clearScreen();
   counter++;
-
+  isGameOver();
   // Fondo
   backGround.draw();
   backGround.move();
@@ -91,7 +101,7 @@ let intervalID = setInterval(() => {
   // Marcador
   scoreBoard.drawScoreBackground();
   scoreBoard.drawScorePoints();
-  scoreBoard.drawScoreLife();
+  scoreBoard.drawScoreDamage();
 
   // Generación de tanques
   if (counter % (10 + randomInt(100, 200)) === 0) {
@@ -108,7 +118,7 @@ let intervalID = setInterval(() => {
   });
 
   // Generación de enemy planes
-  if (counter % (100 + randomInt(150, 300)) === 0) {
+  if (counter % (100 + randomInt(50, 150)) === 0) {
     generateEnemyPlane();
   }
   enemyPlanes.forEach(function(enemyPlane) {
@@ -130,7 +140,7 @@ let intervalID = setInterval(() => {
   plane.machineguns = plane.machineguns.filter(function(machinegun) {
     return machinegun.x < w;
   });
-  plane.damage();
+  
   //collision check
   checkColisionTankPlane();
   checkColisionEnemyPlanePlane();
@@ -143,9 +153,7 @@ let intervalID = setInterval(() => {
   }
 }, 1000 / gameFrames);
 
-// function drawScoreBoard() {
-//   scoreBoard.update(score);
-// }
+
 
 //////COLISIONES//////
 
@@ -160,6 +168,7 @@ function checkColisionTankPlane() {
     ) {
       tanks[i].collision = true;
       plane.collision = true;
+      damagePoints += 10;
     }
   }
 }
@@ -174,6 +183,7 @@ function checkColisionEnemyPlanePlane() {
     ) {
       enemyPlanes[i].collision = true;
       plane.collision = true;
+      damagePoints += 10;
     }
   }
 }

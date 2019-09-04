@@ -1,6 +1,6 @@
 class Scoreboard {
   constructor(ctx) {
-    this.x = 18;
+    this.x = 20;
     this.y = 43;
     this.img = new Image();
     this.img.src = "./../Img/Marcador.png"
@@ -14,7 +14,7 @@ class Scoreboard {
       this.img,
       0,
       0,
-      250,
+      280,
       100
     );
   }
@@ -25,9 +25,9 @@ class Scoreboard {
     ctx.fillText("Score: " + Math.floor(score), this.x, this.y);
   }
 
-  drawScoreLife() {
+  drawScoreDamage() {
     
     // ctx.fillStyle = "black";
-    ctx.fillText("Plane Damage: " + Math.floor(100), this.x, this.y + 30);
+    ctx.fillText("Plane Damage: " + Math.floor(damagePoints), this.x, this.y + 30);
   }
 }

@@ -42,15 +42,16 @@ class Plane {
     //array vacío ametralladora
     this.machineguns = [];
 
-    this.health = 1000;
+    
     this.collision = false;
+    this.damageCollision = true;
   }
 
-  damage() {
-    if (this.collision = true) {
-      this.health -= 10
-    }
-  }
+  // damage() {
+  //   if (this.collision = true) {
+  //     this.health -= 10
+  //   }
+  // }
 
   draw(framesCounter) {
     this.ctx.drawImage(
