@@ -36,11 +36,21 @@ function generateTank() {
   tanks.push(new Tank (ctx));
 }
 
-
-
 function clearTanks() {
     tanks = tanks.filter(function(tank) {
       return tank.x >= -200;
+    });
+}
+//enemyPlanes
+let enemyPlanes = [];
+
+function generateEnemyPlane() {
+  enemyPlanes.push(new EnemyPlane (ctx));
+}
+
+function clearEnemyPlanes() {
+    enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
+      return enemyPlane.x >= -200;
     });
 }
 
@@ -106,6 +116,20 @@ tanks.forEach(function(tank) {
 
 tanks = tanks.filter(function(tank) {
   return tank.x >= -200;
+});
+//enemy planes
+if (counter % (100 + randomInt(150, 300)) === 0) {
+  generateEnemyPlane();
+}
+enemyPlanes.forEach(function(enemyPlane) {
+  enemyPlane.draw(counter);
+});
+enemyPlanes.forEach(function(enemyPlane) {
+  enemyPlane.move();
+});
+
+enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
+  return enemyPlane.x >= -200;
 });
 drawplane();
 keyStatus();
