@@ -77,12 +77,21 @@ function keyStatus() {
   }
 }
 
+let scoreBoard = new Scoreboard(ctx);
+
 // Motor del juego
 let intervalID = setInterval(() => {
   clearScreen();
   counter++;
+
+  // Fondo
   backGround.draw();
   backGround.move();
+
+  // Marcador
+  scoreBoard.drawScoreBackground();
+  scoreBoard.drawScorePoints();
+  scoreBoard.drawScoreLife();
 
   // Generación de tanques
   if (counter % (10 + randomInt(100, 200)) === 0) {
@@ -119,13 +128,14 @@ let intervalID = setInterval(() => {
     return bomb.x >= -200;
   });
   plane.machineguns = plane.machineguns.filter(function(machinegun) {
-    return machinegun.x < w
-  })
-
+    return machinegun.x < w;
+  });
+  plane.damage();
   //collision check
   checkColisionTankPlane();
   checkColisionEnemyPlanePlane();
   checkColisionTankBomb();
+  checkColisionEnemyPlaneBomb();
   checkColisionEnemyPlaneMachinegun();
   //mantenimiento
   if (counter > 2000) {
@@ -133,10 +143,9 @@ let intervalID = setInterval(() => {
   }
 }, 1000 / gameFrames);
 
-function drawScoreBoard() {
-  scoreBoard.update(score);
-}
-
+// function drawScoreBoard() {
+//   scoreBoard.update(score);
+// }
 
 //////COLISIONES//////
 
@@ -149,9 +158,8 @@ function checkColisionTankPlane() {
       tanks[i].y < plane.y + plane.h &&
       tanks[i].y + tanks[i].h > plane.y
     ) {
-      
       tanks[i].collision = true;
-      
+      plane.collision = true;
     }
   }
 }
@@ -164,9 +172,8 @@ function checkColisionEnemyPlanePlane() {
       enemyPlanes[i].y < plane.y + plane.h &&
       enemyPlanes[i].y + enemyPlanes[i].h > plane.y
     ) {
-      
       enemyPlanes[i].collision = true;
-      // enemyPlanes[i].newEnemyPlane.src = ""
+      plane.collision = true;
     }
   }
 }
@@ -180,9 +187,30 @@ function checkColisionTankBomb() {
         plane.bombs[i].y < tanks[j].y + tanks[j].h &&
         plane.bombs[i].y + plane.bombs[i].h > tanks[j].y
       ) {
-        
         tanks[j].collision = true;
-        // bombs[i].explosion = true;
+        if (tanks[j].scoreCollision){
+          score += 100;
+        }
+        tanks[j].scoreCollision = false;
+      }
+    }
+  }
+}
+
+function checkColisionEnemyPlaneBomb() {
+  for (var i = 0; i < plane.bombs.length; i++) {
+    for (var j = 0; j < enemyPlanes.length; j++) {
+      if (
+        plane.bombs[i].x < enemyPlanes[j].x + enemyPlanes[j].w &&
+        plane.bombs[i].x + plane.bombs[i].w > enemyPlanes[j].x &&
+        plane.bombs[i].y < enemyPlanes[j].y + enemyPlanes[j].h &&
+        plane.bombs[i].y + plane.bombs[i].h > enemyPlanes[j].y
+      ) {
+        enemyPlanes[j].collision = true;
+        if (enemyPlanes[j].scoreCollision){
+          score += 150;
+        }
+        enemyPlanes[j].scoreCollision = false;
       }
     }
   }
@@ -191,7 +219,6 @@ function checkColisionTankBomb() {
 function checkColisionEnemyPlaneMachinegun() {
   for (var i = 0; i < plane.machineguns.length; i++) {
     for (var j = 0; j < enemyPlanes.length; j++) {
-      // console.log(enemyPlanes[j], plane.machineguns[i])
       if (
         plane.machineguns[i].x < enemyPlanes[j].x + enemyPlanes[j].w &&
         plane.machineguns[i].x + plane.machineguns[i].w > enemyPlanes[j].x &&
@@ -199,8 +226,11 @@ function checkColisionEnemyPlaneMachinegun() {
         plane.machineguns[i].y + plane.machineguns[i].h > enemyPlanes[j].y
       ) {
         enemyPlanes[j].collision = true;
-        console.log("colision ametralladora avion");
-        // machineguns[i].collision = true;
+        if (enemyPlanes[j].scoreCollision){
+          score += 150;
+        }
+        enemyPlanes[j].scoreCollision = false; 
+       
       }
     }
   }

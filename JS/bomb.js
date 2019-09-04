@@ -16,36 +16,35 @@ class Bomb {
     this.h = 20;
     this.gravity = 0.75;
     this.explosion = false;
+    this.scoreCollision = true;
   }
 
   draw() {
     if (!this.explosion) {
       this.ctx.drawImage(this.newBomb, this.x, this.y, 50, 20);
-    }
-    else {
+    } else {
       this.bombExplode();
     }
   }
 
   bombExplode() {
-    
-    // this.y = this.ground;
-    this.gravity = 0
-    this.vy = 0
+    this.gravity = 0;
+    this.vy = 0;
     this.newBomb.src = "";
     this.ctx.drawImage(
       this.newExplosion,
-      this.newExplosion.frameIndex * Math.floor(this.newExplosion.width / this.newExplosion.frames),
+      this.newExplosion.frameIndex *
+        Math.floor(this.newExplosion.width / this.newExplosion.frames),
       0,
       Math.floor(this.newExplosion.width / this.newExplosion.frames),
       this.newExplosion.height,
       this.x,
       this.y - 140,
-      this.newExplosion.width/this.newExplosion.frames - 30,
-      this.newExplosion.height 
+      this.newExplosion.width / this.newExplosion.frames - 30,
+      this.newExplosion.height
     );
     this.animateBomb(counter);
-    this.x -= 14
+    this.x -= 14;
   }
 
   animateBomb(counter) {

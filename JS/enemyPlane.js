@@ -18,9 +18,8 @@ class EnemyPlane {
     this.newExplosion = new Image();
     this.newExplosion.src = "./../Img/Explosiones.png";
     this.newExplosion.frames = 3;
-    // this.newExplosion.frameIndex = 0;
-    // this.enemyPlanes = []
     this.collision = false;
+    this.scoreCollision = true;
   }
 
   draw(framesCounter) {

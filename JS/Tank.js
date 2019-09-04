@@ -15,13 +15,12 @@ class Tank {
     this.newExplosion = new Image();
     this.newExplosion.src = "./../Img/Explosiones.png";
     this.newExplosion.frames = 3;
-    // this.newExplosion.frameIndex = 0;
-    // this.tanks = [];
     this.collision = false;
+    this.scoreCollision = true;
   }
 
   draw(framesCounter) {
-    if (!this.collision) { 
+    if (!this.collision) {
       this.ctx.drawImage(
         this.newTank,
         this.newTank.frameIndex *
@@ -35,9 +34,9 @@ class Tank {
         this.h
       );
       this.animateTank(framesCounter);
-    }
-    else {
-      this.tankExplode()
+    } else {
+      this.tankExplode();
+      
     }
   }
   animateTank(framesCounter) {
@@ -55,18 +54,18 @@ class Tank {
   }
 
   tankExplode() {
-    // this.y = this.ground;
     this.newTank.src = "";
     this.ctx.drawImage(
       this.newExplosion,
-      this.newTank.frameIndex * Math.floor(this.newExplosion.width / this.newExplosion.frames),
+      this.newTank.frameIndex *
+        Math.floor(this.newExplosion.width / this.newExplosion.frames),
       0,
       Math.floor(this.newExplosion.width / this.newExplosion.frames),
       this.newExplosion.height,
       this.x + 100,
       this.y - 50,
       150,
-      250 
+      250
     );
     this.animateTank(counter);
     this.x += 5;

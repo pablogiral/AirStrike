@@ -1,7 +1,10 @@
 body {
   display: flex;
+  
 }
 
-/* canvas {
-  border: 1px solid red;
-} */
+@font-face {
+  font-family: 'Germania One', cursive;
+  font-style: normal;
+  src: url(https://fonts.googleapis.com/css?family=Germania+One&display=swap)
+}

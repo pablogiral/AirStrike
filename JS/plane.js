@@ -3,22 +3,22 @@ class Plane {
     this.canvasW = w;
     this.canvasH = h;
     this.ctx = ctx;
-    this.keys = {
+    (this.keys = {
       TOP_KEY: 38,
       RIGHT_KEY: 39,
       LEFT_KEY: 37,
       BOTT_KEY: 40,
       SPACE: 32,
       B_KEY: 66
-    },
-    this.keyState = {
+    }),
+      (this.keyState = {
         TOP_KEY: false,
         RIGHT_KEY: false,
         LEFT_KEY: false,
         BOTT_KEY: false,
         SPACE: false,
         B_KEY: false
-      };
+      });
     this.x = 80;
     this.y = h2 - 100;
 
@@ -42,6 +42,14 @@ class Plane {
     //array vacío ametralladora
     this.machineguns = [];
 
+    this.health = 1000;
+    this.collision = false;
+  }
+
+  damage() {
+    if (this.collision = true) {
+      this.health -= 10
+    }
   }
 
   draw(framesCounter) {
@@ -83,7 +91,6 @@ class Plane {
   //acciones de tecla
   setListeners() {
     document.onkeydown = function(event) {
-     
       if (event.keyCode === this.keys.LEFT_KEY) {
         this.keyState.LEFT_KEY = true;
       }
@@ -104,8 +111,7 @@ class Plane {
       }
     }.bind(this);
 
-    document.onkeyup = function (event) {
-    
+    document.onkeyup = function(event) {
       if (event.keyCode === this.keys.LEFT_KEY) {
         this.keyState.LEFT_KEY = false;
       }
@@ -127,7 +133,6 @@ class Plane {
     }.bind(this);
   }
 
-  
   //animar avión
   animatePlane(framesCounter) {
     // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
