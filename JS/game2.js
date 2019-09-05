@@ -43,7 +43,7 @@ function clearScreen() {
 
 
 //Start Game
-startGame();
+// startGame();
 
 
 function startGame() {
@@ -82,9 +82,9 @@ function stopGame() {
 }
 
 function gameOver() {
-  if (damagePoints >= 3010) {
+  if (damagePoints >= 2999) {
     stopGame();
-    alert("GAME OVER");
+    // alert("GAME OVER");
     // document.location.reload();
   }
 }
