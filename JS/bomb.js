@@ -17,6 +17,7 @@ class Bomb {
     this.gravity = 0.75;
     this.explosion = false;
     this.scoreCollision = true;
+    this.explosionSound = new Audio ("./../audio/Bomb_Explosion.mp3")
   }
 
   draw() {
@@ -24,10 +25,12 @@ class Bomb {
       this.ctx.drawImage(this.newBomb, this.x, this.y, 50, 20);
     } else {
       this.bombExplode();
+      // this.explosionSound.play();
     }
   }
 
   bombExplode() {
+    
     this.gravity = 0;
     this.vy = 0;
     this.newBomb.src = "";

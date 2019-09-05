@@ -8,6 +8,7 @@ let counter = 0;
 const ground = h - 45;
 let score = 0;
 let damagePoints = 0;
+let ost = new Audio("./../audio/sawsquarenoise_-_04_-_Towel_Defence_Ingame_Action.mp3")
 
 const canvasDOMEL = document.querySelector("#canvas");
 const ctx = canvasDOMEL.getContext("2d");
@@ -27,6 +28,8 @@ function clearScreen() {
   ctx.clearRect(0, 0, w, h);
 }
 
+// ost.play();
+
 function isGameOver() {
   if (damagePoints >= 3000){
     clearInterval(intervalID)
@@ -38,7 +41,7 @@ function isGameOver() {
 
 let backGround = new Background(w, h, ctx);
 
-//mejor toda esta mandanga como métodos de la clase tank?
+//tanks
 
 let tanks = [];
 
