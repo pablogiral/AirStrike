@@ -26,8 +26,6 @@ class Scoreboard {
   }
 
   drawScoreDamage() {
-    
-    // ctx.fillStyle = "black";
     ctx.fillText("Plane Damage: " + Math.floor(damagePoints), this.x, this.y + 30);
   }
 }

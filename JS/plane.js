@@ -47,12 +47,6 @@ class Plane {
     this.damageCollision = true;
   }
 
-  // damage() {
-  //   if (this.collision = true) {
-  //     this.health -= 10
-  //   }
-  // }
-
   draw(framesCounter) {
     this.ctx.drawImage(
       this.img,
@@ -89,51 +83,7 @@ class Plane {
     });
   }
 
-  //acciones de tecla
-  setListeners() {
-    document.onkeydown = function(event) {
-      if (event.keyCode === this.keys.LEFT_KEY) {
-        this.keyState.LEFT_KEY = true;
-      }
-      if (event.keyCode === this.keys.RIGHT_KEY) {
-        this.keyState.RIGHT_KEY = true;
-      }
-      if (event.keyCode === this.keys.TOP_KEY) {
-        this.keyState.TOP_KEY = true;
-      }
-      if (event.keyCode === this.keys.BOTT_KEY) {
-        this.keyState.BOTT_KEY = true;
-      }
-      if (event.keyCode === this.keys.SPACE) {
-        this.fireMachinegun();
-      }
-      if (event.keyCode === this.keys.B_KEY) {
-        this.dropBomb();
-      }
-    }.bind(this);
-
-    document.onkeyup = function(event) {
-      if (event.keyCode === this.keys.LEFT_KEY) {
-        this.keyState.LEFT_KEY = false;
-      }
-      if (event.keyCode === this.keys.RIGHT_KEY) {
-        this.keyState.RIGHT_KEY = false;
-      }
-      if (event.keyCode === this.keys.TOP_KEY) {
-        this.keyState.TOP_KEY = false;
-      }
-      if (event.keyCode === this.keys.BOTT_KEY) {
-        this.keyState.BOTT_KEY = false;
-      }
-      if (event.keyCode === this.keys.SPACE) {
-        this.keyState.SPACE = false;
-      }
-      if (event.keyCode === this.keys.B_KEY) {
-        this.keyState.B_KEY = false;
-      }
-    }.bind(this);
-  }
-
+  
   //animar avión
   animatePlane(framesCounter) {
     // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje

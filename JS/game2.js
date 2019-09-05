@@ -12,18 +12,19 @@ const ctx = canvasDOMEL.getContext("2d");
 let counter = 0;
 let score = 0;
 let damagePoints = 0;
-let ost = new Audio(
-  "./../audio/sawsquarenoise_-_04_-_Towel_Defence_Ingame_Action.mp3"
-);
+let isGameRunning = true;
+let pause = false;
+let ost = new Audio("./../audio/Loop Inicio Doors.mp3");
+let pauseMusic = new Audio("./../audio/")
 let tanks = [];
 let enemyPlanes = [];
 let backGround = undefined;
 let plane = undefined;
 let scoreBoard = undefined;
 let intervalID = undefined;
+let gameOverScreen = new Screen(ctx);
 
-// funcion random number
-
+// utilidad random number
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -33,7 +34,6 @@ function setCanvasDimensions() {
   canvasDOMEL.setAttribute("width", `${w}px`);
   canvasDOMEL.setAttribute("height", `${h}px`);
 }
-
 setCanvasDimensions();
 
 // Clear Screen
@@ -41,14 +41,15 @@ function clearScreen() {
   ctx.clearRect(0, 0, w, h);
 }
 
-
 //Start Game
-// startGame();
-
-
 function startGame() {
   resetGame();
   intervalID = setInterval(() => {
+    if (pause) {
+      let pauseScreen = new Screen(ctx);
+      pauseScreen.drawPause();
+      return
+    };
     clearScreen();
     counter++;
     if (counter % (10 + randomInt(100, 200)) === 0) {
@@ -79,27 +80,85 @@ function startGame() {
 // Stop Game
 function stopGame() {
   clearInterval(intervalID);
+  ost.pause();
+
 }
 
 function gameOver() {
-  if (damagePoints >= 2999) {
+  if (damagePoints >= 100) {
     stopGame();
-    // alert("GAME OVER");
-    // document.location.reload();
+    isGameRunning = false;
+    // let gameOverScreen = new Screen(ctx);
+    gameOverScreen.drawGameOver();
+    gameOverScreen.drawTotalPoints();
   }
 }
 
 // Reset del juego
 function resetGame() {
+  isGameRunning = true;
   backGround = new Background(w, h, ctx);
   plane = new Plane(ctx);
-  plane.setListeners();
+  // setKeys();
+  setListeners();
   scoreBoard = new Scoreboard(ctx);
   counter = 0;
   score = 0;
   damagePoints = 0;
   enemyPlanes = [];
   tanks = [];
+}
+
+// acciones de tecla
+function setListeners() {
+  document.onkeydown = function(event) {
+    if (event.keyCode === plane.keys.LEFT_KEY) {
+      plane.keyState.LEFT_KEY = true;
+    }
+    if (event.keyCode === plane.keys.RIGHT_KEY) {
+      plane.keyState.RIGHT_KEY = true;
+    }
+    if (event.keyCode === plane.keys.TOP_KEY) {
+      plane.keyState.TOP_KEY = true;
+    }
+    if (event.keyCode === plane.keys.BOTT_KEY) {
+      plane.keyState.BOTT_KEY = true;
+    }
+    if (event.keyCode === plane.keys.SPACE) {
+      plane.fireMachinegun();
+    }
+    if (event.keyCode === plane.keys.B_KEY) {
+      plane.dropBomb();
+    }
+    if (event.keyCode === 82 && isGameRunning === false) {
+      startGame();
+      ost.play();
+    }
+    if (event.keyCode === 80) {
+      pause = !pause;
+    }
+  };
+
+  document.onkeyup = function(event) {
+    if (event.keyCode === plane.keys.LEFT_KEY) {
+      plane.keyState.LEFT_KEY = false;
+    }
+    if (event.keyCode === plane.keys.RIGHT_KEY) {
+      plane.keyState.RIGHT_KEY = false;
+    }
+    if (event.keyCode === plane.keys.TOP_KEY) {
+      plane.keyState.TOP_KEY = false;
+    }
+    if (event.keyCode === plane.keys.BOTT_KEY) {
+      plane.keyState.BOTT_KEY = false;
+    }
+    if (event.keyCode === plane.keys.SPACE) {
+      plane.keyState.SPACE = false;
+    }
+    if (event.keyCode === plane.keys.B_KEY) {
+      plane.keyState.B_KEY = false;
+    }
+  };
 }
 
 function keyStatus() {

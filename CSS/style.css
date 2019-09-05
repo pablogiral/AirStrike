@@ -1,10 +1,6 @@
 * {
   box-sizing: border-box;
 }
-/* 
-html, body {
-  height: 100%;
-} */
 
 .main {
   text-align: center;
@@ -32,10 +28,10 @@ html, body {
   border-radius: 40px;
   border-color: transparent;
   height: 90px;
-  width: 300px;
+  width: 400px;
   margin-top: 40px;
   margin-right: 30px;
-  margin-top: 650px;
+  margin-top: 675px;
   font-family: 'Germania One', cursive;
   font-size: 50px;
   background-color: transparent;
@@ -45,7 +41,7 @@ html, body {
 }
 
 #start-button:hover {
-  background-color: rgba(255, 255, 255,0.5);
+  background-color: rgba(255, 255, 255,0.4);
   color: rgb(0, 0, 0);
   border: 9px solid rgb(155, 15, 15)
 }
