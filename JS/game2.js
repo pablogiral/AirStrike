@@ -21,7 +21,7 @@ let gameOverMusic = new Audio("./../audio/valkirias.mp3")
 let pauseIn = new Audio("./../audio/sfx_sounds_pause2_in.wav")
 let pauseOut = new Audio("./../audio/sfx_sounds_pause2_out.wav")
 let bombDrop = new Audio("./../audio/sfx_wpn_grenadewhistle2.wav")
-let bombExplosion = new Audio("./../audio/sfx_exp_medium6.wav")
+let bombExplosion = new Audio("./../audio/bombexplosionlarga.mp3")
 let enemyExplosion = new Audio("./../audio/sfx_exp_short_hard10.wav")
 let machinegunshot = new Audio("./../audio/sfx_wpn_machinegun_loop1.wav")
 
@@ -324,8 +324,10 @@ function checkColisionTankBomb() {
         plane.bombs[i].y + plane.bombs[i].h > tanks[j].y
       ) {
         tanks[j].collision = true;
+        enemyExplosion.play()
         if (tanks[j].scoreCollision) {
           score += 100;
+          
         }
         tanks[j].scoreCollision = false;
       }
@@ -344,6 +346,7 @@ function checkColisionEnemyPlaneBomb() {
         plane.bombs[i].y + plane.bombs[i].h > enemyPlanes[j].y
       ) {
         enemyPlanes[j].collision = true;
+        enemyExplosion.play()
         if (enemyPlanes[j].scoreCollision) {
           score += 150;
         }
@@ -364,6 +367,7 @@ function checkColisionEnemyPlaneMachinegun() {
         plane.machineguns[i].y + plane.machineguns[i].h > enemyPlanes[j].y
       ) {
         enemyPlanes[j].collision = true;
+        enemyExplosion.play()
         if (enemyPlanes[j].scoreCollision) {
           score += 150;
         }
