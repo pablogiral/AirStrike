@@ -1,5 +1,5 @@
 window.onload = function () {
-  ost.play();
+  menuMusic.play();
   document.getElementById("start-button").onclick = function () {
     document.querySelector(".main").style.display = "none";
     startGame();

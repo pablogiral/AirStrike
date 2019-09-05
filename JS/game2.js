@@ -14,8 +14,17 @@ let score = 0;
 let damagePoints = 0;
 let isGameRunning = true;
 let pause = false;
-let ost = new Audio("./../audio/Loop Inicio Doors.mp3");
-let pauseMusic = new Audio("./../audio/")
+// Game Sounds
+let menuMusic = new Audio("./../audio/Loop Inicio Doors.mp3");
+let inGameMusic = new Audio("./../audio/All allong the watchtower.mp3")
+let gameOverMusic = new Audio("./../audio/valkirias.mp3")
+let pauseIn = new Audio("./../audio/sfx_sounds_pause2_in.wav")
+let pauseOut = new Audio("./../audio/sfx_sounds_pause2_out.wav")
+let bombDrop = new Audio("./../audio/sfx_wpn_grenadewhistle2.wav")
+let bombExplosion = new Audio("./../audio/sfx_exp_medium6.wav")
+let enemyExplosion = new Audio("./../audio/sfx_exp_short_hard10.wav")
+let machinegunshot = new Audio("./../audio/sfx_wpn_machinegun_loop1.wav")
+
 let tanks = [];
 let enemyPlanes = [];
 let backGround = undefined;
@@ -44,10 +53,19 @@ function clearScreen() {
 //Start Game
 function startGame() {
   resetGame();
+  menuMusic.pause();
+  // pauseOut.play()
+  menuMusic.currentTime = 0
+  gameOverMusic.pause();
+  gameOverMusic.currentTime = 0
+  inGameMusic.play()
   intervalID = setInterval(() => {
     if (pause) {
       let pauseScreen = new Screen(ctx);
       pauseScreen.drawPause();
+      inGameMusic.pause()
+      // pauseIn.play()
+      menuMusic.play();
       return
     };
     clearScreen();
@@ -80,15 +98,17 @@ function startGame() {
 // Stop Game
 function stopGame() {
   clearInterval(intervalID);
-  ost.pause();
-
+  menuMusic.pause();
+  menuMusic.currentTime = 0
 }
 
 function gameOver() {
   if (damagePoints >= 100) {
     stopGame();
+    inGameMusic.pause();
+    inGameMusic.currentTime = 0
+    gameOverMusic.play();
     isGameRunning = false;
-    // let gameOverScreen = new Screen(ctx);
     gameOverScreen.drawGameOver();
     gameOverScreen.drawTotalPoints();
   }
@@ -99,7 +119,6 @@ function resetGame() {
   isGameRunning = true;
   backGround = new Background(w, h, ctx);
   plane = new Plane(ctx);
-  // setKeys();
   setListeners();
   scoreBoard = new Scoreboard(ctx);
   counter = 0;
@@ -129,10 +148,11 @@ function setListeners() {
     }
     if (event.keyCode === plane.keys.B_KEY) {
       plane.dropBomb();
+      // dropBomb.play()
+      // bombExplosion.play()
     }
     if (event.keyCode === 82 && isGameRunning === false) {
       startGame();
-      ost.play();
     }
     if (event.keyCode === 80) {
       pause = !pause;
@@ -157,6 +177,14 @@ function setListeners() {
     }
     if (event.keyCode === plane.keys.B_KEY) {
       plane.keyState.B_KEY = false;
+      // bombExplosion.pause()
+      // bombExplosion.currentTime = 0;
+    }
+    if (event.keyCode === 80) {
+      menuMusic.pause();
+      menuMusic.currentTime = 0;
+      pauseOut.play()
+      inGameMusic.play();
     }
   };
 }

@@ -68,6 +68,7 @@ class Plane {
     });
 
     this.bombs.forEach(function(bomb) {
+      // bombDrop.play();
       bomb.draw();
       bomb.move();
     });
@@ -78,6 +79,7 @@ class Plane {
     });
 
     this.machineguns.forEach(function(machinegun) {
+      machinegunshot.play();
       machinegun.draw();
       machinegun.move();
     });

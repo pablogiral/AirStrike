@@ -17,7 +17,7 @@ class Bomb {
     this.gravity = 0.75;
     this.explosion = false;
     this.scoreCollision = true;
-    this.explosionSound = new Audio ("./../audio/Bomb_Explosion.mp3")
+    // this.explosionSound = new Audio ("./../audio/Bomb_Explosion.mp3")
   }
 
   draw() {
