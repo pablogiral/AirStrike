@@ -1,75 +1,106 @@
+// Variables básicas
+
 const w = window.innerWidth;
 const h = window.innerHeight;
 const w2 = w / 2;
 const h2 = h / 2;
 const PI_DOUBLE = Math.PI * 2;
 const gameFrames = 50;
-let counter = 0;
 const ground = h - 45;
-let score = 0;
-let damagePoints = 0;
-let ost = new Audio("./../audio/sawsquarenoise_-_04_-_Towel_Defence_Ingame_Action.mp3")
-
 const canvasDOMEL = document.querySelector("#canvas");
 const ctx = canvasDOMEL.getContext("2d");
+let counter = 0;
+let score = 0;
+let damagePoints = 0;
+let ost = new Audio(
+  "./../audio/sawsquarenoise_-_04_-_Towel_Defence_Ingame_Action.mp3"
+);
+let tanks = [];
+let enemyPlanes = [];
+let backGround = undefined;
+let plane = undefined;
+let scoreBoard = undefined;
+let intervalID = undefined;
+
+// funcion random number
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-canvasDOMEL.setAttribute("width", `${w}px`);
-canvasDOMEL.setAttribute("height", `${h}px`);
+// Dimensiones del canvas
+function setCanvasDimensions() {
+  canvasDOMEL.setAttribute("width", `${w}px`);
+  canvasDOMEL.setAttribute("height", `${h}px`);
+}
 
+setCanvasDimensions();
+
+// Clear Screen
 function clearScreen() {
   ctx.clearRect(0, 0, w, h);
 }
 
-// ost.play();
 
-function isGameOver() {
-  if (damagePoints >= 3010){
-    clearInterval(intervalID)
-    alert("GAME OVER")
-    document.location.reload();
+//Start Game
+startGame();
+
+
+function startGame() {
+  resetGame();
+  intervalID = setInterval(() => {
+    clearScreen();
+    counter++;
+    if (counter % (10 + randomInt(100, 200)) === 0) {
+      generateTank();
+    }
+    if (counter % (100 + randomInt(50, 150)) === 0) {
+      generateEnemyPlane();
+    }
+    drawAll();
+    moveAll();
+    //collision check
+    checkColisionTankPlane();
+    checkColisionEnemyPlanePlane();
+    checkColisionTankBomb();
+    checkColisionEnemyPlaneBomb();
+    checkColisionEnemyPlaneMachinegun();
+    //limpiar
+    clearAll();
+    keyStatus();
+    //mantenimiento
+    if (counter > 2000) {
+      counter = 0;
+    }
+    gameOver();
+  }, 1000 / gameFrames);
+}
+
+// Stop Game
+function stopGame() {
+  clearInterval(intervalID);
+}
+
+function gameOver() {
+  if (damagePoints >= 3010) {
+    stopGame();
+    alert("GAME OVER");
+    // document.location.reload();
   }
 }
 
-
-let backGround = new Background(w, h, ctx);
-
-//tanks
-
-let tanks = [];
-
-function generateTank() {
-  tanks.push(new Tank(ctx));
+// Reset del juego
+function resetGame() {
+  backGround = new Background(w, h, ctx);
+  plane = new Plane(ctx);
+  plane.setListeners();
+  scoreBoard = new Scoreboard(ctx);
+  counter = 0;
+  score = 0;
+  damagePoints = 0;
+  enemyPlanes = [];
+  tanks = [];
 }
-
-function clearTanks() {
-  tanks = tanks.filter(function(tank) {
-    return tank.x >= -200;
-  });
-}
-//enemyPlanes
-let enemyPlanes = [];
-
-function generateEnemyPlane() {
-  enemyPlanes.push(new EnemyPlane(ctx));
-}
-
-function clearEnemyPlanes() {
-  enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
-    return enemyPlane.x >= -200;
-  });
-}
-
-let plane = new Plane(ctx);
-
-function drawplane() {
-  plane.draw(counter);
-}
-
-plane.setListeners();
 
 function keyStatus() {
   if (plane.keyState.TOP_KEY && plane.y > 5) {
@@ -86,77 +117,84 @@ function keyStatus() {
   }
 }
 
-let scoreBoard = new Scoreboard(ctx);
+// Generación de enemigos
+function generateEnemyPlane() {
+  enemyPlanes.push(new EnemyPlane(ctx));
+}
 
-// Motor del juego
-let intervalID = setInterval(() => {
-  clearScreen();
-  counter++;
-  isGameOver();
+function generateTank() {
+  tanks.push(new Tank(ctx));
+}
+
+// Pintar todo
+function drawAll() {
   // Fondo
   backGround.draw();
-  backGround.move();
-
   // Marcador
   scoreBoard.drawScoreBackground();
   scoreBoard.drawScorePoints();
   scoreBoard.drawScoreDamage();
-
-  // Generación de tanques
-  if (counter % (10 + randomInt(100, 200)) === 0) {
-    generateTank();
-  }
+  //tank
   tanks.forEach(function(tank) {
     tank.draw(counter);
   });
-  tanks.forEach(function(tank) {
-    tank.move();
-  });
-  tanks = tanks.filter(function(tank) {
-    return tank.x >= -200;
-  });
-
-  // Generación de enemy planes
-  if (counter % (100 + randomInt(50, 150)) === 0) {
-    generateEnemyPlane();
-  }
+  //enemy plane
   enemyPlanes.forEach(function(enemyPlane) {
     enemyPlane.draw(counter);
   });
+  // main plane
+  plane.draw(counter);
+}
+
+// Movimiento de todo
+function moveAll() {
+  // Fondo
+  backGround.move();
+  // Tanks
+  tanks.forEach(function(tank) {
+    tank.move();
+  });
+  // Enemy plane
   enemyPlanes.forEach(function(enemyPlane) {
     enemyPlane.move();
   });
+}
+
+// Limpieza de elementos fuera de la pantalla
+function clearAll() {
+  clearEnemyPlanes();
+  clearTanks();
+  clearBombs();
+  clearMachinegun();
+}
+
+function clearEnemyPlanes() {
   enemyPlanes = enemyPlanes.filter(function(enemyPlane) {
     return enemyPlane.x >= -200;
   });
+}
 
-  //Plane
-  drawplane();
-  keyStatus();
+function clearTanks() {
+  tanks = tanks.filter(function(tank) {
+    return tank.x >= -200;
+  });
+}
+
+function clearBombs() {
   plane.bombs = plane.bombs.filter(function(bomb) {
     return bomb.x >= -200;
   });
+}
+
+function clearMachinegun() {
   plane.machineguns = plane.machineguns.filter(function(machinegun) {
     return machinegun.x < w;
   });
-  
-  //collision check
-  checkColisionTankPlane();
-  checkColisionEnemyPlanePlane();
-  checkColisionTankBomb();
-  checkColisionEnemyPlaneBomb();
-  checkColisionEnemyPlaneMachinegun();
-  //mantenimiento
-  if (counter > 2000) {
-    counter = 0;
-  }
-}, 1000 / gameFrames);
-
-
+}
 
 //////COLISIONES//////
 
-// Tanques-avion
+// Tanque - avion
 function checkColisionTankPlane() {
   for (var i = 0; i < tanks.length; i++) {
     if (
@@ -172,6 +210,7 @@ function checkColisionTankPlane() {
   }
 }
 
+// Enemy plane - plane
 function checkColisionEnemyPlanePlane() {
   for (var i = 0; i < enemyPlanes.length; i++) {
     if (
@@ -187,6 +226,7 @@ function checkColisionEnemyPlanePlane() {
   }
 }
 
+// Tanque - bomba
 function checkColisionTankBomb() {
   for (var i = 0; i < plane.bombs.length; i++) {
     for (var j = 0; j < tanks.length; j++) {
@@ -197,7 +237,7 @@ function checkColisionTankBomb() {
         plane.bombs[i].y + plane.bombs[i].h > tanks[j].y
       ) {
         tanks[j].collision = true;
-        if (tanks[j].scoreCollision){
+        if (tanks[j].scoreCollision) {
           score += 100;
         }
         tanks[j].scoreCollision = false;
@@ -206,6 +246,7 @@ function checkColisionTankBomb() {
   }
 }
 
+// Enemy plane - bomb
 function checkColisionEnemyPlaneBomb() {
   for (var i = 0; i < plane.bombs.length; i++) {
     for (var j = 0; j < enemyPlanes.length; j++) {
@@ -216,7 +257,7 @@ function checkColisionEnemyPlaneBomb() {
         plane.bombs[i].y + plane.bombs[i].h > enemyPlanes[j].y
       ) {
         enemyPlanes[j].collision = true;
-        if (enemyPlanes[j].scoreCollision){
+        if (enemyPlanes[j].scoreCollision) {
           score += 150;
         }
         enemyPlanes[j].scoreCollision = false;
@@ -225,6 +266,7 @@ function checkColisionEnemyPlaneBomb() {
   }
 }
 
+// Enemy plane - machinegun
 function checkColisionEnemyPlaneMachinegun() {
   for (var i = 0; i < plane.machineguns.length; i++) {
     for (var j = 0; j < enemyPlanes.length; j++) {
@@ -235,11 +277,10 @@ function checkColisionEnemyPlaneMachinegun() {
         plane.machineguns[i].y + plane.machineguns[i].h > enemyPlanes[j].y
       ) {
         enemyPlanes[j].collision = true;
-        if (enemyPlanes[j].scoreCollision){
+        if (enemyPlanes[j].scoreCollision) {
           score += 150;
         }
-        enemyPlanes[j].scoreCollision = false; 
-       
+        enemyPlanes[j].scoreCollision = false;
       }
     }
   }
