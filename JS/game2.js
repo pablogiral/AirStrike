@@ -1,5 +1,4 @@
 // Variables básicas
-
 const w = window.innerWidth;
 const h = window.innerHeight;
 const w2 = w / 2;
@@ -14,17 +13,6 @@ let score = 0;
 let damagePoints = 0;
 let isGameRunning = true;
 let pause = false;
-// Game Sounds
-let menuMusic = new Audio("./../audio/Loop Inicio Doors.mp3");
-let inGameMusic = new Audio("./../audio/All allong the watchtower.mp3")
-let gameOverMusic = new Audio("./../audio/valkirias.mp3")
-let pauseIn = new Audio("./../audio/sfx_sounds_pause2_in.wav")
-let pauseOut = new Audio("./../audio/sfx_sounds_pause2_out.wav")
-let bombDrop = new Audio("./../audio/bombdrop.mp3")
-let bombExplosion = new Audio("./../audio/bombexplosionlarga.mp3")
-let enemyExplosion = new Audio("./../audio/sfx_exp_short_hard10.wav")
-let machinegunshot = new Audio("./../audio/sfx_wpn_machinegun_loop1.wav")
-let planeSound = new Audio("./../audio/sfx_vehicle_helicopterloop4.wav")
 
 let tanks = [];
 let enemyPlanes = [];
@@ -34,6 +22,20 @@ let plane = undefined;
 let scoreBoard = undefined;
 let intervalID = undefined;
 let gameOverScreen = new Screen(ctx);
+
+// Game Sounds
+let menuMusic = new Audio("./../audio/Loop Inicio Doors.mp3");
+let inGameMusic = new Audio("./../audio/All allong the watchtower.mp3")
+let gameOverMusic = new Audio("./../audio/valkirias.mp3")
+let pauseIn = new Audio("./../audio/sfx_sounds_pause2_in.wav")
+let pauseOut = new Audio("./../audio/sfx_sounds_pause2_out.wav")
+let bombDrop = new Audio("./../audio/bombdrop.mp3")
+let bombExplosion = new Audio("./../audio/sfx_exp_medium6.wav")
+let enemyExplosion = new Audio("./../audio/sfx_exp_short_hard10.wav")
+let machinegunshot = new Audio("./../audio/sfx_wpn_machinegun_loop1.wav")
+let planeSound = new Audio("./../audio/sfx_vehicle_helicopterloop4.wav")
+let newEnemySound = new Audio("./../audio/new enemy.mp3")
+let newCoinSound = new Audio("./../audio/sfx_coin_cluster7.wav")
 
 // utilidad random number
 function randomInt(min, max) {
@@ -56,7 +58,6 @@ function clearScreen() {
 function startGame() {
   resetGame();
   menuMusic.pause();
-  // pauseOut.play()
   menuMusic.currentTime = 0
   gameOverMusic.pause();
   gameOverMusic.currentTime = 0
@@ -77,10 +78,10 @@ function startGame() {
     if (counter % (10 + randomInt(100, 200)) === 0) {
       generateTank();
     }
-    if (counter % (100 + randomInt(50, 150)) === 0) {
+    if (counter % (50 + randomInt(50, 150)) === 0) {
       generateEnemyPlane();
     }
-    if (counter % (100 + randomInt(50, 150)) === 0) {
+    if (counter % (300 + randomInt(100, 150)) === 0) {
       generateCoin();
     }
     drawAll();
@@ -110,6 +111,7 @@ function stopGame() {
   menuMusic.currentTime = 0
 }
 
+// Game Over
 function gameOver() {
   if (damagePoints >= 1000) {
     stopGame();
@@ -141,7 +143,7 @@ function resetGame() {
   coins = [];
 }
 
-// acciones de tecla
+// Acciones de tecla
 function setListeners() {
   document.onkeydown = function(event) {
     if (event.keyCode === plane.keys.LEFT_KEY) {
@@ -161,8 +163,6 @@ function setListeners() {
     }
     if (event.keyCode === plane.keys.B_KEY) {
       plane.dropBomb();
-      // dropBomb.play()
-      // bombExplosion.play()
     }
     if (event.keyCode === 82 && isGameRunning === false) {
       startGame();
@@ -190,8 +190,6 @@ function setListeners() {
     }
     if (event.keyCode === plane.keys.B_KEY) {
       plane.keyState.B_KEY = false;
-      // bombExplosion.pause()
-      // bombExplosion.currentTime = 0;
     }
     if (event.keyCode === 80) {
       menuMusic.pause();
@@ -219,14 +217,17 @@ function keyStatus() {
 
 // Generación de enemigos
 function generateEnemyPlane() {
+  newEnemySound.play();
   enemyPlanes.push(new EnemyPlane(ctx));
 }
 
 function generateCoin() {
+  newCoinSound.play()
   coins.push(new Coin(ctx));
 }
 
 function generateTank() {
+  newEnemySound.play();
   tanks.push(new Tank(ctx));
 }
 
@@ -238,18 +239,19 @@ function drawAll() {
   scoreBoard.drawScoreBackground();
   scoreBoard.drawScorePoints();
   damagePoints > 0? scoreBoard.drawScoreDamage() : scoreBoard.drawScoreDamageCero();
-  //tank
+  // Tank
   tanks.forEach(function(tank) {
     tank.draw(counter);
   });
-  //enemy plane
+  // Enemy plane
   enemyPlanes.forEach(function(enemyPlane) {
     enemyPlane.draw(counter);
   });
+  // Coins
   coins.forEach(function(coin) {
     coin.draw(counter);
   });
-  // main plane
+  // Main plane
   plane.draw(counter);
 }
 

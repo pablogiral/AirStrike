@@ -10,7 +10,7 @@ class EnemyPlane {
     this.vy = 0.5;
     this.gravity = 0.05;
     this.newEnemyPlane = new Image();
-    this.newEnemyPlane.src = "./../Img/Enemy plane.png";
+    this.newEnemyPlane.src = "./../Img/Enemy plane RAF.png";
     this.newEnemyPlane.frames = 3;
     this.newEnemyPlane.frameIndex = 0;
     this.newEnemyPlane.width = 681;

@@ -22,24 +22,24 @@ class Plane {
     this.x = 80;
     this.y = h2 - 100;
 
-    // guardar posición original (suelo) //llamarlo posicion yGround en vez de y0 para aclararme
+    // Guardar posición original (suelo)
     this.y0 = this.canvasH - 220;
 
     this.img = new Image();
-    this.img.src = "./../img/Sprites plane 4.png";
+    this.img.src = "./../img/Sprites plane 5.png";
 
-    // número de frames diferentes en el sprite
+    // Número de frames diferentes en el sprite
     this.img.frames = 3;
     this.img.frameIndex = 0;
 
-    // medidas de la imagen a representar en el canvas
+    // Medidas de la imagen a representar en el canvas
     this.w = 713 / 3;
     this.h = 403 / 3;
 
-    //array vacío para bombas
+    // Array vacío para bombas
     this.bombs = [];
 
-    //array vacío ametralladora
+    // Array vacío ametralladora
     this.machineguns = [];
 
     
@@ -48,8 +48,6 @@ class Plane {
   }
 
   draw(framesCounter) {
-    // planeSound.play();
-    // planeSound.loop = true;
     this.ctx.drawImage(
       this.img,
       this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
@@ -64,7 +62,7 @@ class Plane {
 
     this.animatePlane(framesCounter);
 
-    //bomba
+    // Bomba
     this.bombs = this.bombs.filter(bomb => {
       return bomb.x < this.canvasW;
     });
@@ -74,7 +72,7 @@ class Plane {
       bomb.move();
     });
 
-    //metralleta
+    // Metralleta
     this.machineguns = this.machineguns.filter(machinegun => {
       return machinegun.x < this.canvasW;
     });
@@ -86,9 +84,9 @@ class Plane {
   }
 
   
-  //animar avión
+  // Animar avión
   animatePlane(framesCounter) {
-    // se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
+    // Se va cambiando el frame. Cuanto mayor es el módulo, mas lento se mueve el personaje
     if (framesCounter % 3 === 0) {
       this.img.frameIndex += 1;
 
@@ -97,7 +95,7 @@ class Plane {
     }
   }
 
-  //tirar bombas
+  // Tirar bombas
   dropBomb() {
     bombDrop.volume = 0.6;
     bombDrop.play();
@@ -110,7 +108,7 @@ class Plane {
     this.bombs.push(bomb);
   }
 
-  //disparar ametralladora
+  // Disparar ametralladora
   fireMachinegun() {
     machinegunshot.play();
     var machinegun = new MachineGun(

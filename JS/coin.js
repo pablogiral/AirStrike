@@ -57,7 +57,6 @@ class Coin {
   }
 
   coinExplode() {
-    // this.y = this.ground;
     this.newCoin.src = "";
     this.ctx.drawImage(
       this.newExplosion,
