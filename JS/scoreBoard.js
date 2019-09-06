@@ -28,4 +28,8 @@ class Scoreboard {
   drawScoreDamage() {
     ctx.fillText("Plane Damage: " + Math.floor(damagePoints), this.x, this.y + 30);
   }
+
+  drawScoreDamageCero() {
+    ctx.fillText("Plane Damage: 0" , this.x, this.y + 30);
+  }
 }

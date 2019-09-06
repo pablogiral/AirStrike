@@ -36,7 +36,6 @@ class Tank {
       this.animateTank(framesCounter);
     } else {
       this.tankExplode();
-      // enemyExplosion.play()
     }
   }
   animateTank(framesCounter) {

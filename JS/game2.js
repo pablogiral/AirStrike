@@ -20,13 +20,15 @@ let inGameMusic = new Audio("./../audio/All allong the watchtower.mp3")
 let gameOverMusic = new Audio("./../audio/valkirias.mp3")
 let pauseIn = new Audio("./../audio/sfx_sounds_pause2_in.wav")
 let pauseOut = new Audio("./../audio/sfx_sounds_pause2_out.wav")
-let bombDrop = new Audio("./../audio/sfx_wpn_grenadewhistle2.wav")
+let bombDrop = new Audio("./../audio/bombdrop.mp3")
 let bombExplosion = new Audio("./../audio/bombexplosionlarga.mp3")
 let enemyExplosion = new Audio("./../audio/sfx_exp_short_hard10.wav")
 let machinegunshot = new Audio("./../audio/sfx_wpn_machinegun_loop1.wav")
+let planeSound = new Audio("./../audio/sfx_vehicle_helicopterloop4.wav")
 
 let tanks = [];
 let enemyPlanes = [];
+let coins = []
 let backGround = undefined;
 let plane = undefined;
 let scoreBoard = undefined;
@@ -64,23 +66,29 @@ function startGame() {
       let pauseScreen = new Screen(ctx);
       pauseScreen.drawPause();
       inGameMusic.pause()
-      // pauseIn.play()
       menuMusic.play();
       return
     };
     clearScreen();
     counter++;
+    if (damagePoints < 0) {
+      damagePoints = 0
+    }
     if (counter % (10 + randomInt(100, 200)) === 0) {
       generateTank();
     }
     if (counter % (100 + randomInt(50, 150)) === 0) {
       generateEnemyPlane();
     }
+    if (counter % (100 + randomInt(50, 150)) === 0) {
+      generateCoin();
+    }
     drawAll();
     moveAll();
     //collision check
     checkColisionTankPlane();
     checkColisionEnemyPlanePlane();
+    checkColisionCoinPlane();
     checkColisionTankBomb();
     checkColisionEnemyPlaneBomb();
     checkColisionEnemyPlaneMachinegun();
@@ -103,7 +111,7 @@ function stopGame() {
 }
 
 function gameOver() {
-  if (damagePoints >= 100) {
+  if (damagePoints >= 1000) {
     stopGame();
     inGameMusic.pause();
     inGameMusic.currentTime = 0
@@ -119,13 +127,18 @@ function resetGame() {
   isGameRunning = true;
   backGround = new Background(w, h, ctx);
   plane = new Plane(ctx);
+  // planeSound.play()
+  // planeSound.loop = true;
   setListeners();
+  // planeSound.play()
+  // planeSound.loop = true;
   scoreBoard = new Scoreboard(ctx);
   counter = 0;
   score = 0;
   damagePoints = 0;
   enemyPlanes = [];
   tanks = [];
+  coins = [];
 }
 
 // acciones de tecla
@@ -209,6 +222,10 @@ function generateEnemyPlane() {
   enemyPlanes.push(new EnemyPlane(ctx));
 }
 
+function generateCoin() {
+  coins.push(new Coin(ctx));
+}
+
 function generateTank() {
   tanks.push(new Tank(ctx));
 }
@@ -220,7 +237,7 @@ function drawAll() {
   // Marcador
   scoreBoard.drawScoreBackground();
   scoreBoard.drawScorePoints();
-  scoreBoard.drawScoreDamage();
+  damagePoints > 0? scoreBoard.drawScoreDamage() : scoreBoard.drawScoreDamageCero();
   //tank
   tanks.forEach(function(tank) {
     tank.draw(counter);
@@ -228,6 +245,9 @@ function drawAll() {
   //enemy plane
   enemyPlanes.forEach(function(enemyPlane) {
     enemyPlane.draw(counter);
+  });
+  coins.forEach(function(coin) {
+    coin.draw(counter);
   });
   // main plane
   plane.draw(counter);
@@ -245,6 +265,10 @@ function moveAll() {
   enemyPlanes.forEach(function(enemyPlane) {
     enemyPlane.move();
   });
+  // Enemy plane
+  coins.forEach(function(coin) {
+    coin.move();
+  });
 }
 
 // Limpieza de elementos fuera de la pantalla
@@ -253,6 +277,7 @@ function clearAll() {
   clearTanks();
   clearBombs();
   clearMachinegun();
+  clearCoins();
 }
 
 function clearEnemyPlanes() {
@@ -260,6 +285,13 @@ function clearEnemyPlanes() {
     return enemyPlane.x >= -200;
   });
 }
+
+function clearCoins() {
+  coins = coins.filter(function(coin) {
+    return coin.x >= -200;
+  });
+}
+
 
 function clearTanks() {
   tanks = tanks.filter(function(tank) {
@@ -291,6 +323,7 @@ function checkColisionTankPlane() {
       tanks[i].y + tanks[i].h > plane.y
     ) {
       tanks[i].collision = true;
+      enemyExplosion.play()
       plane.collision = true;
       damagePoints += 10;
     }
@@ -307,12 +340,29 @@ function checkColisionEnemyPlanePlane() {
       enemyPlanes[i].y + enemyPlanes[i].h > plane.y
     ) {
       enemyPlanes[i].collision = true;
+      enemyExplosion.play()
       plane.collision = true;
       damagePoints += 10;
     }
   }
 }
 
+// Coin - plane
+function checkColisionCoinPlane() {
+  for (var i = 0; i < coins.length; i++) {
+    if (
+      coins[i].x < plane.x + plane.w &&
+      coins[i].x + coins[i].w > plane.x &&
+      coins[i].y < plane.y + plane.h &&
+      coins[i].y + coins[i].h > plane.y
+    ) {
+      coins[i].collision = true;
+      pauseIn.play()
+      plane.collision = true;
+      damagePoints -= 10;
+    }
+  }
+}
 // Tanque - bomba
 function checkColisionTankBomb() {
   for (var i = 0; i < plane.bombs.length; i++) {

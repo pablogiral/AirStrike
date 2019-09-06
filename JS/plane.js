@@ -48,6 +48,8 @@ class Plane {
   }
 
   draw(framesCounter) {
+    // planeSound.play();
+    // planeSound.loop = true;
     this.ctx.drawImage(
       this.img,
       this.img.frameIndex * Math.floor(this.img.width / this.img.frames),
@@ -68,7 +70,6 @@ class Plane {
     });
 
     this.bombs.forEach(function(bomb) {
-      // bombDrop.play();
       bomb.draw();
       bomb.move();
     });
@@ -79,7 +80,6 @@ class Plane {
     });
 
     this.machineguns.forEach(function(machinegun) {
-      machinegunshot.play();
       machinegun.draw();
       machinegun.move();
     });
@@ -99,6 +99,8 @@ class Plane {
 
   //tirar bombas
   dropBomb() {
+    bombDrop.volume = 0.6;
+    bombDrop.play();
     var bomb = new Bomb(
       this.x + this.w - 90,
       this.y + this.h / 2 + 15,
@@ -110,6 +112,7 @@ class Plane {
 
   //disparar ametralladora
   fireMachinegun() {
+    machinegunshot.play();
     var machinegun = new MachineGun(
       this.x + this.w - 40,
       this.y + this.h / 2 - 36,
