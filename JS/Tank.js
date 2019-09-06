@@ -7,13 +7,13 @@ class Tank {
     this.x = w;
     this.y = ground - this.h;
     this.newTank = new Image();
-    this.newTank.src = "./../Img/Enemy Tank.png";
+    this.newTank.src = "Img/Enemy Tank.png";
     this.newTank.frames = 3;
     this.newTank.frameIndex = 0;
     this.newTank.width = 702;
     this.newTank.height = 104;
     this.newExplosion = new Image();
-    this.newExplosion.src = "./../Img/Explosiones.png";
+    this.newExplosion.src = "Img/Explosiones.png";
     this.newExplosion.frames = 3;
     this.collision = false;
     this.scoreCollision = true;

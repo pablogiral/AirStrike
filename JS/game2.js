@@ -24,18 +24,18 @@ let intervalID = undefined;
 let gameOverScreen = new Screen(ctx);
 
 // Game Sounds
-let menuMusic = new Audio("../audio/Loop Inicio Doors.mp3");
-let inGameMusic = new Audio("../audio/All allong the watchtower.mp3")
-let gameOverMusic = new Audio("../audio/valkirias.mp3")
-let pauseIn = new Audio("../audio/sfx_sounds_pause2_in.wav")
-let pauseOut = new Audio("../audio/sfx_sounds_pause2_out.wav")
-let bombDrop = new Audio("../audio/bombdrop.mp3")
-let bombExplosion = new Audio("../audio/sfx_exp_medium6.wav")
-let enemyExplosion = new Audio("../audio/sfx_exp_short_hard10.wav")
-let machinegunshot = new Audio("../audio/sfx_wpn_machinegun_loop1.wav")
-let planeSound = new Audio("../audio/sfx_vehicle_helicopterloop4.wav")
-let newEnemySound = new Audio("../audio/new enemy.mp3")
-let newCoinSound = new Audio("../audio/sfx_coin_cluster7.wav")
+let menuMusic = new Audio("audio/Loop Inicio Doors.mp3");
+let inGameMusic = new Audio("audio/All allong the watchtower.mp3")
+let gameOverMusic = new Audio("audio/valkirias.mp3")
+let pauseIn = new Audio("audio/sfx_sounds_pause2_in.wav")
+let pauseOut = new Audio("audio/sfx_sounds_pause2_out.wav")
+let bombDrop = new Audio("audio/bombdrop.mp3")
+let bombExplosion = new Audio("audio/sfx_exp_medium6.wav")
+let enemyExplosion = new Audio("audio/sfx_exp_short_hard10.wav")
+let machinegunshot = new Audio("audio/sfx_wpn_machinegun_loop1.wav")
+let planeSound = new Audio("audio/sfx_vehicle_helicopterloop4.wav")
+let newEnemySound = new Audio("audio/new enemy.mp3")
+let newCoinSound = new Audio("audio/sfx_coin_cluster7.wav")
 
 // utilidad random number
 function randomInt(min, max) {

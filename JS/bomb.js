@@ -7,9 +7,9 @@ class Bomb {
     this.vx = 9;
     this.vy = 1;
     this.newBomb = new Image();
-    this.newBomb.src = "./../Img/Bomb_2.png";
+    this.newBomb.src = "Img/Bomb_2.png";
     this.newExplosion = new Image();
-    this.newExplosion.src = "./../Img/Explosiones.png";
+    this.newExplosion.src = "Img/Explosiones.png";
     this.newExplosion.frames = 3;
     this.newExplosion.frameIndex = 0;
     this.w = 50;

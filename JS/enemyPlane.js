@@ -10,13 +10,13 @@ class EnemyPlane {
     this.vy = 0.5;
     this.gravity = 0.05;
     this.newEnemyPlane = new Image();
-    this.newEnemyPlane.src = "./../Img/Enemy plane RAF.png";
+    this.newEnemyPlane.src = "Img/Enemy plane RAF.png";
     this.newEnemyPlane.frames = 3;
     this.newEnemyPlane.frameIndex = 0;
     this.newEnemyPlane.width = 681;
     this.newEnemyPlane.height = 103;
     this.newExplosion = new Image();
-    this.newExplosion.src = "./../Img/Explosiones.png";
+    this.newExplosion.src = "Img/Explosiones.png";
     this.newExplosion.frames = 3;
     this.collision = false;
     this.scoreCollision = true;

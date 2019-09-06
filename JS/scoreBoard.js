@@ -3,7 +3,7 @@ class Scoreboard {
     this.x = 20;
     this.y = 43;
     this.img = new Image();
-    this.img.src = "./../Img/Marcador.png"
+    this.img.src = "Img/Marcador.png"
     this.w = 100;
     this.h = 50;
 

@@ -26,7 +26,7 @@ class Plane {
     this.y0 = this.canvasH - 220;
 
     this.img = new Image();
-    this.img.src = "./../img/Sprites plane 5.png";
+    this.img.src = "img/Sprites plane 5.png";
 
     // Número de frames diferentes en el sprite
     this.img.frames = 3;

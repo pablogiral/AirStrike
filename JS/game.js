@@ -8,7 +8,7 @@ let counter = 0;
 const ground = h - 45;
 let score = 0;
 let damagePoints = 0;
-let ost = new Audio("./../audio/sawsquarenoise_-_04_-_Towel_Defence_Ingame_Action.mp3")
+let ost = new Audio("audio/sawsquarenoise_-_04_-_Towel_Defence_Ingame_Action.mp3")
 
 const canvasDOMEL = document.querySelector("#canvas");
 const ctx = canvasDOMEL.getContext("2d");

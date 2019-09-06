@@ -5,10 +5,10 @@ class Screen {
     this.h = h
 
     this.pauseImg = new Image()
-    this.pauseImg.src = './../Img/AirStrikePause.png'
+    this.pauseImg.src = 'Img/AirStrikePause.png'
 
     this.gameOverImg = new Image()
-    this.gameOverImg.src = './../Img/FokkerDown.png'
+    this.gameOverImg.src = 'Img/FokkerDown.png'
     
   }
 
